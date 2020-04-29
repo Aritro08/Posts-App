@@ -1,15 +1,26 @@
 <br>
-<mat-accordion multi='true' *ngIf='posts.length > 0'>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<h3 *ngIf='posts.length == 0 && !isLoading' style="text-align: center;">No posts added yet.</h3>
+<mat-accordion multi='true' *ngIf='posts.length > 0 && !isLoading'>
   <mat-expansion-panel *ngFor='let post of posts'>
     <mat-expansion-panel-header>
       {{ post.title }}
     </mat-expansion-panel-header>
     <mat-divider></mat-divider>
+    <div class="postImg">
+      <img [src]="post.imagePath" [alt]="post.title">
+    </div>
     <p>{{ post.content }}</p>
     <mat-action-row>
-      <button mat-button color='accent'>EDIT</button>
-      <button mat-button color='warn'>DELETE</button>
+      <a mat-button [routerLink] = "['/edit/', post.id]" color='accent'>EDIT</a>
+      <button mat-button color='warn' (click) = 'onDelete(post.id)'>DELETE</button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
-<h3 *ngIf='posts.length == 0' style="text-align: center;">No posts added yet.</h3>
+<br>
+<mat-paginator *ngIf='posts.length > 0'
+  [length]='totalPosts'
+  [pageSize]='postPerPage'
+  [pageSizeOptions]='postOptions'
+  (page)='onPageChange($event)'></mat-paginator>
+

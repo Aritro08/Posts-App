@@ -1,3 +1,20 @@
 mat-form-field, textarea {
   width: 100%;
 }
+
+input[type='file'] {
+  display: none;
+}
+
+.imgdiv{
+  margin-bottom: 20px;
+}
+
+.imageView{
+  width: 300px;
+  height: 300px;
+}
+
+.imageView img{
+  height: 100%;
+}

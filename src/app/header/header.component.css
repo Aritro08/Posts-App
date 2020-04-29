@@ -1,0 +1,23 @@
+ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+a{
+  font-size: 16px;
+  text-decoration: none;
+  color: aliceblue;
+}
+
+.nav{
+  padding: 0 40px;
+}
+
+.active{
+  color: black;
+}
+
+.space{
+  width: 20px;
+}

@@ -1,1 +1,7 @@
-<mat-toolbar color="primary">My Posts</mat-toolbar>
+<mat-toolbar color="primary" class="nav">
+  <span><a routerLink = ''><h3>My posts</h3></a></span>
+  <span class="space"></span>
+  <ul>
+    <li><a mat-button routerLink = '/new' routerLinkActive='active'>Add Post</a></li>
+  </ul>
+</mat-toolbar>

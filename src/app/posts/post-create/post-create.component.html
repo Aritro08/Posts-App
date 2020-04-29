@@ -1,12 +1,19 @@
 <mat-card>
-  <form #postForm='ngForm' (ngSubmit)='onAddPost(postForm)'>
+  <form [formGroup] = 'postForm' (ngSubmit)='onAddPost()'>
     <mat-form-field appearance='outline'>
       <mat-label>Title</mat-label>
-      <input matInput id="title" type="text" ngModel name="title" required>
+      <input matInput id="title" type="text" name="title" required formControlName='title'>
     </mat-form-field>
+    <div class="imgdiv">
+      <button mat-stroked-button color='primary' type="button" (click) = 'fileInput.click()'>Upload image</button>
+      <input type="file" #fileInput (change) = 'onAddImage($event)'>
+    </div>
+    <div class="imageView imgdiv" *ngIf="imagePrev != '' && imagePrev">
+      <img [src]="imagePrev" [alt]="postForm.value.title">
+    </div>
     <mat-form-field appearance='outline'>
       <mat-label>Content</mat-label>
-      <textarea matInput rows="6" name="content" ngModel required></textarea>
+      <textarea matInput rows="6" name="content" required formControlName='content'></textarea>
     </mat-form-field>
     <button mat-raised-button color='primary' type="submit" [disabled]='!postForm.valid'>Save Post</button>
   </form>

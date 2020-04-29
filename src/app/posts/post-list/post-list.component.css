@@ -1,0 +1,12 @@
+mat-spinner {
+  margin: auto;
+}
+
+.postImg{
+  margin: 20px auto;
+  width: 50%;
+}
+
+.postImg img{
+  width: 100%;
+}
