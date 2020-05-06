@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
-  title = 'posts-app';
+export class AppComponent implements OnInit {
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    this.authService.autoLogin();
+  }
 }

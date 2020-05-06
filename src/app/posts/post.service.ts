@@ -16,30 +16,33 @@ export class PostService {
   postChanged = new Subject<{posts: Post[], postCount: number}>();
 
   getPostById(id: string) {
-    return this.http.get<{_id: string, title: string, content: string, imagePath: string}>('http://localhost:3000/api/posts/' + id);
+    return this.http.get<{_id: string, title: string, content: string, imagePath: string, creator: string, userName: string}>('http://localhost:3000/api/posts/' + id);
   }
 
   getPosts(postsPerPage: number, curPage: number) {
     const queryParams = `?size=${postsPerPage}&page=${curPage}`;
     this.http.get<{message: string, posts: any, postCount: number}>('http://localhost:3000/api/posts' + queryParams)
     .pipe(
-        map(postData => {
-          return {
-            posts: postData.posts.map(post => {
-              return {
-                title: post.title,
-                content: post.content,
-                id: post._id,
-                imagePath: post.imagePath
-              };
-            }),
-            postCount: postData.postCount
-          };
-        })
-      ).subscribe(postData => {
-        this.posts = postData.posts;
-        this.postChanged.next({posts: this.posts.slice(), postCount: postData.postCount});
-      });
+      map(postData => {
+        return {
+          posts: postData.posts.map(post => {
+            return {
+              title: post.title,
+              content: post.content,
+              id: post._id,
+              imagePath: post.imagePath,
+              creator: post.creator,
+              userName: post.userName
+            };
+          }),
+          postCount: postData.postCount
+        };
+      })
+    ).subscribe(postData => {
+      this.posts = postData.posts;
+      console.log(this.posts);
+      this.postChanged.next({posts: this.posts.slice(), postCount: postData.postCount});
+    });
   }
 
   addPost(title: string, content: string, image: File) {
@@ -82,6 +85,7 @@ export class PostService {
       // this.postChanged.next(this.posts.slice());
       //-------------------------------------------------------
       //navigates to list page where posts will be fetched from db on ngInit()
+      console.log(resData);
       this.router.navigate(['/']);
     });
   }

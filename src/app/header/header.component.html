@@ -2,6 +2,9 @@
   <span><a routerLink = ''><h3>My posts</h3></a></span>
   <span class="space"></span>
   <ul>
-    <li><a mat-button routerLink = '/new' routerLinkActive='active'>Add Post</a></li>
+    <li *ngIf='isAuthenticated'><a mat-button routerLink = '/new' routerLinkActive='active'>Add Post</a></li>
+    <li *ngIf='!isAuthenticated'><a mat-button routerLink = '/login' routerLinkActive='active'>Login</a></li>
+    <li *ngIf='!isAuthenticated'><a mat-button routerLink = '/sign-up' routerLinkActive='active'>Sign Up</a></li>
+    <li *ngIf='isAuthenticated'><button mat-button (click)='onLogout()'>Logout</button></li>
   </ul>
 </mat-toolbar>

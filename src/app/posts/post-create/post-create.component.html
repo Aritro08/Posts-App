@@ -2,7 +2,7 @@
   <form [formGroup] = 'postForm' (ngSubmit)='onAddPost()'>
     <mat-form-field appearance='outline'>
       <mat-label>Title</mat-label>
-      <input matInput id="title" type="text" name="title" required formControlName='title'>
+      <input matInput type="text" formControlName='title'>
     </mat-form-field>
     <div class="imgdiv">
       <button mat-stroked-button color='primary' type="button" (click) = 'fileInput.click()'>Upload image</button>
@@ -13,7 +13,7 @@
     </div>
     <mat-form-field appearance='outline'>
       <mat-label>Content</mat-label>
-      <textarea matInput rows="6" name="content" required formControlName='content'></textarea>
+      <textarea matInput rows="6" formControlName='content'></textarea>
     </mat-form-field>
     <button mat-raised-button color='primary' type="submit" [disabled]='!postForm.valid'>Save Post</button>
   </form>

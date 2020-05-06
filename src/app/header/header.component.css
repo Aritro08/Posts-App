@@ -2,6 +2,7 @@ ul{
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
 }
 
 a{
@@ -19,5 +20,9 @@ a{
 }
 
 .space{
-  width: 20px;
+  width: 1150px;
+}
+
+button{
+  font-size: 16px;
 }
