@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../Models/user');
 
@@ -14,9 +14,12 @@ router.post('/sign-up', (req, res, next) => {
         password: hash
       });
       user.save().then(resData => {
+        const token = jwt.sign({ email: resData.email, id: resData._id}, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(200).json({
           message: 'User created',
-          userData: resData
+          token: token,
+          expiresIn: 3600,
+          userId: resData._id
         });
       })
       .catch(err => {
@@ -48,7 +51,7 @@ router.post('/login', (req, res, next) => {
       });
     }
     //if passwords match generate new token
-    const token = jwt.sign({ email: fetchedUser.email, id: fetchedUser._id}, 'secret', { expiresIn: '1h' });
+    const token = jwt.sign({ email: fetchedUser.email, id: fetchedUser._id}, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.status(200).json({
       token: token,
       expiresIn: 3600,

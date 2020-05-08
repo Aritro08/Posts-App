@@ -1,0 +1,6 @@
+{
+  "env": {
+    "MONGO_PASS": "BlMUrjxGAkeN2k9q",
+    "JWT_SECRET": "secret"
+  }
+}

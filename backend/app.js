@@ -8,13 +8,11 @@ const usersRoutes = require('./Routes/users');
 
 const app = express();
 
-//mongo pass = BlMUrjxGAkeN2k9q
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use('/images', express.static(path.join('backend/images')));
 
-mongoose.connect('mongodb+srv://Aritro:BlMUrjxGAkeN2k9q@cluster0-nzmvx.mongodb.net/postApp?retryWrites=true&w=majority').then(() => {
+mongoose.connect(`mongodb+srv://Aritro:${process.env.MONGO_PASS}@cluster0-nzmvx.mongodb.net/postApp?retryWrites=true&w=majority`).then(() => {
   console.log('Connected to database.');
 }).catch(() => {
   console.log('Connection failed.');

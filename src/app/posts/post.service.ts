@@ -4,6 +4,9 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+
+const BACKEND_URL = environment.backendUrl + 'posts/';
 
 @Injectable({providedIn: 'root'})
 
@@ -13,15 +16,15 @@ export class PostService {
 
   posts: Post[] = [];
 
-  postChanged = new Subject<{posts: Post[], postCount: number}>();
+  postChanged = new Subject<{posts: Post[], postCount: number, size: number}>();
 
   getPostById(id: string) {
-    return this.http.get<{_id: string, title: string, content: string, imagePath: string, creator: string, userName: string}>('http://localhost:3000/api/posts/' + id);
+    return this.http.get<{_id: string, title: string, content: string, imagePath: string, creator: string, userName: string}>(BACKEND_URL + id);
   }
 
   getPosts(postsPerPage: number, curPage: number) {
     const queryParams = `?size=${postsPerPage}&page=${curPage}`;
-    this.http.get<{message: string, posts: any, postCount: number}>('http://localhost:3000/api/posts' + queryParams)
+    this.http.get<{message: string, posts: any, postCount: number, size: number}>(BACKEND_URL + queryParams)
     .pipe(
       map(postData => {
         return {
@@ -35,13 +38,13 @@ export class PostService {
               userName: post.userName
             };
           }),
-          postCount: postData.postCount
+          postCount: postData.postCount,
+          size: postData.size
         };
       })
     ).subscribe(postData => {
       this.posts = postData.posts;
-      console.log(this.posts);
-      this.postChanged.next({posts: this.posts.slice(), postCount: postData.postCount});
+      this.postChanged.next({posts: this.posts.slice(), postCount: postData.postCount, size: postData.size});
     });
   }
 
@@ -50,8 +53,8 @@ export class PostService {
     postData.append('title', title);
     postData.append('content', content);
     postData.append('image', image, title);
-    this.http.post<{message: string, post: Post}>('http://localhost:3000/api/posts', postData).subscribe(resData => {
-      //Before adding postCount attribute :
+    this.http.post<{message: string, post: Post}>(BACKEND_URL, postData).subscribe(resData => {
+      //Adding post to local posts array :
       //-------------------------------------------------------
       // const post: Post = { id: resData.post.id, title: title, content: content, imagePath: resData.post.imagePath };
       // this.posts.push(post);
@@ -74,8 +77,8 @@ export class PostService {
       postData = { id: id, title: title, content: content, imagePath: image };
     }
 
-    this.http.put<{message: string, imagePath: string}>('http://localhost:3000/api/posts/' + id, postData).subscribe(resData => {
-      //Before adding postCount attribute :
+    this.http.put<{message: string, imagePath: string}>(BACKEND_URL + id, postData).subscribe(resData => {
+      //Updating post on local posts array :
       //------------------------------------------------------
       // const updatedPosts = [...this.posts];
       // const i = updatedPosts.findIndex(post => post.id == id);
@@ -91,7 +94,7 @@ export class PostService {
   }
 
   deletePost(id: string) {
-    return this.http.delete<{message: string}>('http://localhost:3000/api/posts/' + id);
+    return this.http.delete<{message: string}>(BACKEND_URL + id);
     // .subscribe((message) => {
     //   this.posts = this.posts.filter(post => post.id != id);
     //   this.postChanged.next(this.posts.slice());

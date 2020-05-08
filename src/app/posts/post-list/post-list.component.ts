@@ -11,7 +11,6 @@ import { AuthService } from 'src/app/auth/auth.service';
   styleUrls: ['./post-list.component.css']
 })
 export class PostListComponent implements OnInit, OnDestroy {
-
   posts: Post[] = [];
   postsChangedSubs: Subscription;
   authStatusSub: Subscription;
@@ -22,7 +21,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   postPerPage = 3;
   curPage = 1;
   postOptions = [2,3,4,6];
-
+  lastPostOnPage = false;
 
   constructor(private postService: PostService, private authService: AuthService) { }
 
@@ -46,7 +45,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.postService.deletePost(id).subscribe(resData => {
       this.isLoading = false;
-      this.postService.getPosts(this.postPerPage, this.curPage)
+      this.postService.getPosts(this.postPerPage, this.curPage-1)
     });
   }
 
@@ -61,5 +60,4 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.postsChangedSubs.unsubscribe();
     this.authStatusSub.unsubscribe();
   }
-
 }
